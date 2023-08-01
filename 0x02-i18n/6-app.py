@@ -17,7 +17,7 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
     """Returns the index page"""
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 @babel.localeselector
@@ -25,8 +25,14 @@ def get_locale():
     """Select a language translation to use for that request"""
     if request.args.get('locale') in app.config['LANGUAGES']:
         return request.args.get('locale')
+    
+    login_as = request.args.get('login_as')
+    if login_as:
+        user = get_user(int(login_as))
+        if user and user['locale'] in app.config['LANGUAGES']:
+            return user['locale']
+        
     return request.accept_languages.best_match(app.config['LANGUAGES'])
-
 
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},

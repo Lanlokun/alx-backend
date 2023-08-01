@@ -23,6 +23,6 @@ def index():
 @babel.localeselector
 def get_locale():
     """Select a language translation to use for that request"""
-    if request.args.get('locale'):
+    if request.args.get('locale') in app.config['LANGUAGES']:
         return request.args.get('locale')
     return request.accept_languages.best_match(app.config['LANGUAGES'])
